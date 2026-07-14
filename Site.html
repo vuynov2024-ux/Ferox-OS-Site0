@@ -327,6 +327,35 @@
             }
         }
 
+        /* Блок режима быстродействия */
+        .perf-section {
+            margin-top: 45px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+        }
+
+        .perf-status {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+            letter-spacing: -0.2px;
+        }
+
+        .perf-status-value {
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        .btn-perf-toggle {
+            margin-top: 16px;
+            font-size: 14px;
+            padding: 14px 28px;
+            width: auto;
+            min-width: 320px;
+            border-radius: 14px;
+        }
+
         /* --- Уведомление сверху --- */
         .toast-notification {
             position: fixed;
@@ -528,11 +557,12 @@
             .spec-list li { flex-direction: column; gap: 6px; }
             .spec-value { text-align: left; }
             .toast-notification { width: 100%; }
+            .btn-perf-toggle { width: 100%; min-width: unset; }
 
             /* Делаем фоновые круги крупнее и ближе к центру, чтобы они были сочно видны на телефонах */
             .blob {
-                filter: blur(65px); /* Чуть уменьшаем размытие, чтобы цвет не растворялся */
-                opacity: 0.65; /* Делаем капельку ярче */
+                filter: blur(65px); 
+                opacity: 0.65; 
             }
             .blob-1 {
                 width: 85vw;
@@ -554,45 +584,59 @@
             }
         }
 
-        /* --- СТИЛИ ОПТИМИЗАЦИИ ДЛЯ ANDROID (ВЫКЛЮЧАЕМ ЖИДКОЕ СТЕКЛО И АНИМАЦИИ) --- */
-        body.is-android .glass-panel,
-        body.is-android .toast-notification,
-        body.is-android .custom-context-menu,
-        body.is-android .modal-backdrop {
+        /* --- ДИНАМИЧЕСКИЙ РЕЖИМ МАКСИМАЛЬНОГО БЫСТРОДЕЙСТВИЯ (ВЫКЛЮЧАЕМ ЭФФЕКТЫ) --- */
+        body.perf-mode-active .glass-panel,
+        body.perf-mode-active .toast-notification,
+        body.perf-mode-active .custom-context-menu,
+        body.perf-mode-active .modal-backdrop,
+        body.perf-mode-active .glass-cursor-follower {
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
         }
 
-        /* Заменяем прозрачное стекло на стильную, оптимизированную непрозрачную подложку */
-        body.is-android .glass-panel {
+        /* Заменяем прозрачное стекло на оптимизированную непрозрачную подложку */
+        body.perf-mode-active .glass-panel {
             background: #121217 !important; 
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        body.is-android .toast-notification {
+        body.perf-mode-active .toast-notification {
             background: #16161f !important;
         }
-        body.is-android .custom-context-menu {
+        body.perf-mode-active .custom-context-menu {
             background: #0f0f14 !important;
         }
-        body.is-android .modal-content {
+        body.perf-mode-active .modal-content {
             background: #14141a !important;
         }
 
-        /* Выключаем тяжелую анимацию плавающих кругов и пульсацию на Android для стабильных 60 FPS */
-        body.is-android .blob {
+        /* --- КУРСОР БЕЗ LIQUID GLASS В РЕЖИМЕ СВЕРХБЫСТРОДЕЙСТВИЯ --- */
+        body.perf-mode-active .glass-cursor-follower {
+            background: rgba(255, 255, 255, 0.12) !important;
+            border: 1px solid rgba(255, 255, 255, 0.35) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+        }
+        
+        body.perf-mode-active.cursor-hover .glass-cursor-follower {
+            background: rgba(255, 75, 43, 0.18) !important;
+            border-color: rgba(255, 75, 43, 0.55) !important;
+            box-shadow: 0 4px 16px rgba(255, 75, 43, 0.15) !important;
+        }
+
+        /* Отключаем анимацию плавающих кругов и пульсацию для идеального FPS */
+        body.perf-mode-active .blob {
             animation: none !important;
             transform: none !important;
         }
-        body.is-android .badge-version {
+        body.perf-mode-active .badge-version {
             animation: none !important;
             box-shadow: 0 4px 12px rgba(255, 75, 43, 0.15);
         }
-        body.is-android .main-container {
-            animation: none !important; /* Убираем стартовую анимацию появления */
+        body.perf-mode-active .main-container {
+            animation: none !important; 
             opacity: 1;
             transform: translateY(0);
         }
-        body.is-android .feature-card {
+        body.perf-mode-active .feature-card {
             animation: none !important;
             opacity: 1;
             transform: translateY(0);
@@ -662,6 +706,13 @@
             <button class="btn btn-primary" id="btnDownloadMain">Скачать ISO образ</button>
             <button class="btn btn-ghost" id="openSpecs">Спецификации</button>
         </div>
+
+        <div class="perf-section">
+            <p class="perf-status">
+                Режим максимального быстродействия: <span id="perfStatusValue" class="perf-status-value">Выключен</span>
+            </p>
+            <button class="btn btn-ghost btn-perf-toggle" id="btnTogglePerf">Включить режим быстродействия</button>
+        </div>
     </main>
 
     <div class="modal-wrapper" id="specsModal">
@@ -694,8 +745,25 @@
             
             const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
             let targetDeviceText = "на ваше устройство";
+            const body = document.body;
 
-            // --- 1. ОПРЕДЕЛЕНИЕ УСТРОЙСТВА И ОПТИМИЗАЦИЯ ДЛЯ ANDROID ---
+            const perfStatusValue = document.getElementById('perfStatusValue');
+            const btnTogglePerf = document.getElementById('btnTogglePerf');
+
+            // --- ФУНКЦИЯ ОБНОВЛЕНИЯ ИНТЕРФЕЙСА РЕЖИМА БЫСТРОДЕЙСТВИЯ ---
+            function updatePerfModeUI() {
+                if (body.classList.contains('perf-mode-active')) {
+                    perfStatusValue.textContent = "Включен";
+                    perfStatusValue.style.color = "#00c6ff"; 
+                    btnTogglePerf.textContent = "Выключить режим быстродействия";
+                } else {
+                    perfStatusValue.textContent = "Выключен";
+                    perfStatusValue.style.color = "rgba(255, 255, 255, 0.4)"; 
+                    btnTogglePerf.textContent = "Включить режим быстродействия";
+                }
+            }
+
+            // --- 1. ОПРЕДЕЛЕНИЕ УСТРОЙСТВА И СТАРТОВАЯ НАСТРОЙКА ---
             async function detectDevice() {
                 const ua = navigator.userAgent;
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
@@ -703,8 +771,7 @@
                 if (isMobile) {
                     if (/Android/i.test(ua)) {
                         targetDeviceText = "на ваш телефон";
-                        // Если это Android — активируем облегченный CSS режим без жидкого стекла и анимаций
-                        document.body.classList.add('is-android');
+                        body.classList.add('perf-mode-active');
                     } else if (/iPhone/i.test(ua)) {
                         const width = window.screen.width;
                         const height = window.screen.height;
@@ -735,8 +802,16 @@
                         targetDeviceText = "на ваш ПК";
                     }
                 }
+                
+                updatePerfModeUI();
             }
             detectDevice();
+
+            // --- ОБРАБОТЧИК КНОПКИ ПЕРЕКЛЮЧЕНИЯ РЕЖИМА ---
+            btnTogglePerf.addEventListener('click', () => {
+                body.classList.toggle('perf-mode-active');
+                updatePerfModeUI();
+            });
 
             // --- 2. МОДАЛЬНОЕ ОКНО ---
             const modal = document.getElementById('specsModal');
