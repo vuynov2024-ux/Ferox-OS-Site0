@@ -2,617 +2,868 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ferox OS 1 — Быстрая. Мощная. Твоя.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ferox OS — Твоя новая реальность</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            /* Убираем серый квадрат при тапе на iOS */
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        ::selection {
+            background: rgba(255, 75, 43, 0.35);
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(255, 75, 43, 0.9), 0 0 2px rgba(255, 255, 255, 0.5);
+        }
+        
+        ::-moz-selection {
+            background: rgba(255, 75, 43, 0.35);
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(255, 75, 43, 0.9), 0 0 2px rgba(255, 255, 255, 0.5);
         }
 
         body {
-            background: #0d0f14;
-            color: #e8edf2;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #08080a;
+            color: #f1f1f1;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
             padding: 20px;
-        }
-
-        /* ===== АНИМАЦИЯ ПОЯВЛЕНИЯ КАРТОЧКИ ===== */
-        .card {
-            max-width: 960px;
-            width: 100%;
-            background: #161a22;
-            border-radius: 40px;
-            padding: 48px 40px;
-            box-shadow: 0 25px 50px -8px rgba(0, 0, 0, 0.8);
-            border: 1px solid #2a313c;
-            text-align: center;
-            animation: cardAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            transform: translateY(40px) scale(0.97);
-        }
-
-        @keyframes cardAppear {
-            0% {
-                opacity: 0;
-                transform: translateY(40px) scale(0.97);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .logo-wrapper {
-            display: flex;
-            align-items: baseline;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 4px 10px;
-        }
-
-        /* ===== АНИМАЦИЯ СВЕЧЕНИЯ ЛОГОТИПА ===== */
-        .logo {
-            font-size: 52px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, #f97316, #ef4444);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-            animation: glowPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes glowPulse {
-            0%, 100% {
-                filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.2));
-            }
-            50% {
-                filter: drop-shadow(0 0 24px rgba(249, 115, 22, 0.6));
-            }
-        }
-
-        /* ===== АНИМАЦИЯ ПОКАЧИВАНИЯ ЦИФРЫ "1" ===== */
-        .version-badge {
-            display: inline-block;
-            background: #2a313c;
-            color: #f97316;
-            font-size: 26px;
-            font-weight: 700;
-            padding: 0 10px;
-            border-radius: 40px;
-            border: 1px solid #f9731640;
-            vertical-align: 0.6em;
-            line-height: 1.4;
-            margin-left: 2px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-4px);
-            }
-        }
-
-        .subhead {
-            font-size: 18px;
-            color: #9aa4b8;
-            margin-top: 6px;
-            margin-bottom: 32px;
-            letter-spacing: 0.3px;
-        }
-
-        .divider {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #f9731660, #ef444460, transparent);
-            margin: 28px 0 32px 0;
-            border: 0;
-        }
-
-        /* ===== СЕТКА ФИЧ С КАСКАДНОЙ АНИМАЦИЕЙ ===== */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 28px 0 32px 0;
-            text-align: left;
-        }
-
-        .feature-item {
-            background: #1f2631;
-            padding: 18px 16px 16px 16px;
-            border-radius: 20px;
-            border-left: 4px solid #f97316;
-            transition: 0.25s ease;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: featureSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .feature-item:nth-child(1) { animation-delay: 0.05s; }
-        .feature-item:nth-child(2) { animation-delay: 0.10s; }
-        .feature-item:nth-child(3) { animation-delay: 0.15s; }
-        .feature-item:nth-child(4) { animation-delay: 0.20s; }
-        .feature-item:nth-child(5) { animation-delay: 0.25s; }
-        .feature-item:nth-child(6) { animation-delay: 0.30s; }
-
-        @keyframes featureSlide {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .feature-item:hover {
-            background: #262e3d;
-            transform: scale(1.02) translateY(-2px);
-            box-shadow: 0 8px 24px rgba(249, 115, 22, 0.08);
-        }
-
-        .feature-item h3 {
-            font-size: 17px;
-            font-weight: 700;
-            color: #fbbf8c;
-            margin-bottom: 4px;
-        }
-
-        .feature-item p {
-            font-size: 14px;
-            color: #b0bacf;
-            line-height: 1.4;
-        }
-
-        /* ===== КНОПКИ ===== */
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 14px;
-            margin-top: 24px;
-        }
-
-        .btn {
-            text-decoration: none;
-            padding: 14px 34px;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 16px;
-            transition: 0.25s ease;
-            display: inline-block;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            /* Запрещаем выделение текста долгим тапом для всего, кроме нужных элементов */
+            -webkit-touch-callout: none;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #f97316, #dc2626);
-            color: #fff;
-            box-shadow: 0 8px 18px -4px #dc262660;
+        /* Интерактивный курсор для десктопов */
+        @media (pointer: fine) and (hover: hover) {
+            body, a, button, .feature-card, .context-item, .toast-notification {
+                cursor: none !important;
+            }
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 14px 28px -4px #dc262690;
-        }
-
-        .btn-secondary {
-            background: #262e3d;
-            color: #d1d8e8;
-            border: 1px solid #3f495b;
-        }
-
-        .btn-secondary:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: #2f3a4b;
-            border-color: #f9731660;
-            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.1);
-        }
-
-        .btn:active {
-            transform: scale(0.96) !important;
-        }
-
-        .footer {
-            margin-top: 36px;
-            font-size: 13px;
-            color: #606a7e;
-            border-top: 1px solid #222b38;
-            padding-top: 24px;
-            letter-spacing: 0.2px;
-        }
-
-        .footer span {
-            color: #f97316;
-        }
-
-        /* ===== МОДАЛЬНОЕ ОКНО ===== */
-        .modal-overlay {
-            display: none;
+        .glass-cursor, .glass-cursor-follower {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(6px);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.25s ease;
+            pointer-events: none;
+            z-index: 100000000;
+            border-radius: 50%;
+            transform: translate3d(-50%, -50%, 0);
+            will-change: transform;
+            transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                        background-color 0.3s, 
+                        border-color 0.3s;
         }
 
-        .modal-overlay.active {
-            display: flex;
+        .glass-cursor {
+            width: 8px;
+            height: 8px;
+            background-color: #ff4b2b;
+            box-shadow: 0 0 10px #ff4b2b;
         }
 
-        .modal {
-            background: #161a22;
-            border: 1px solid #2a313c;
-            border-radius: 32px;
-            max-width: 580px;
-            width: 95%;
-            padding: 32px 30px 28px;
-            box-shadow: 0 40px 80px -12px #000000cc;
-            position: relative;
-            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            max-height: 90vh;
-            overflow-y: auto;
+        .glass-cursor-follower {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(5px) saturate(140%);
+            -webkit-backdrop-filter: blur(5px) saturate(140%);
+            box-shadow: 
+                inset 0 1px 3px rgba(255, 255, 255, 0.3),
+                0 8px 24px rgba(0, 0, 0, 0.2);
         }
 
-        .modal-close {
+        body.cursor-hover .glass-cursor {
+            width: 12px;
+            height: 12px;
+            background-color: #ff416c;
+            box-shadow: 0 0 15px #ff416c;
+        }
+
+        body.cursor-hover .glass-cursor-follower {
+            width: 55px;
+            height: 55px;
+            background: rgba(255, 75, 43, 0.12);
+            border-color: rgba(255, 75, 43, 0.45);
+            backdrop-filter: blur(3px) saturate(160%);
+            -webkit-backdrop-filter: blur(3px) saturate(160%);
+        }
+
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #0d0d11 0%, #040405 100%);
+        }
+
+        .blob {
             position: absolute;
-            top: 16px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: #8f9bb3;
-            font-size: 32px;
-            font-weight: 300;
-            line-height: 1;
-            cursor: pointer;
-            transition: 0.2s ease;
-            padding: 0 6px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.55;
+            animation: drift 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .modal-close:hover {
-            color: #f97316;
-            transform: rotate(90deg) scale(1.1);
+        .blob-1 {
+            width: 55vw;
+            height: 55vw;
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+            top: -15%;
+            left: -15%;
         }
 
-        .modal h2 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            background: linear-gradient(135deg, #f97316, #ef4444);
+        .blob-2 {
+            width: 45vw;
+            height: 45vw;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            bottom: -25%;
+            right: -15%;
+            animation-delay: -6s;
+        }
+
+        .blob-3 {
+            width: 35vw;
+            height: 35vw;
+            background: linear-gradient(135deg, #f9d423, #ff4e50);
+            top: 35%;
+            left: 35%;
+            animation-delay: -12s;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(8%, 12%) scale(1.1) rotate(180deg); }
+            100% { transform: translate(-4%, -8%) scale(0.95) rotate(360deg); }
+        }
+
+        .glass-panel {
+            background: rgba(18, 18, 23, 0.4);
+            backdrop-filter: blur(30px) saturate(190%);
+            -webkit-backdrop-filter: blur(30px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 40px;
+            box-shadow: 
+                0 40px 80px rgba(0, 0, 0, 0.6), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.12);
+        }
+
+        .main-container {
+            max-width: 1040px;
+            width: 100%;
+            padding: 60px;
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header-section {
+            text-align: left;
+            margin-bottom: 50px;
+        }
+
+        .title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #ffffff 30%, #a5a5b0 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+
+        .badge-version {
+            background: rgba(255, 75, 43, 0.12);
+            border: 1px solid rgba(255, 75, 43, 0.25);
+            color: #ff4b2b;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 20px rgba(255, 75, 43, 0.15);
+            animation: pulseGlow 2.5s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px rgba(255, 75, 43, 0.1); }
+            100% { box-shadow: 0 0 25px rgba(255, 75, 43, 0.3); border-color: rgba(255, 75, 43, 0.4); }
+        }
+
+        .subtitle {
+            font-size: 21px;
+            color: rgba(255, 255, 255, 0.65);
+            font-weight: 300;
+            line-height: 1.6;
+            max-width: 750px;
+            /* Разрешаем выделение текста для описания, чтобы протестить кнопку "Копировать" */
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
+        .grid-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 30px 24px;
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.2s; }
+        .feature-card:nth-child(2) { animation-delay: 0.3s; }
+        .feature-card:nth-child(3) { animation-delay: 0.4s; }
+        .feature-card:nth-child(4) { animation-delay: 0.5s; }
+
+        @keyframes cardFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Отключаем sticky-hover на мобилках */
+        @media (hover: hover) {
+            .feature-card:hover {
+                background: rgba(255, 255, 255, 0.05);
+                transform: translateY(-6px) scale(1.01);
+                border-color: rgba(255, 255, 255, 0.12);
+                box-shadow: 
+                    0 20px 40px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            }
+            .feature-card:hover .feature-icon {
+                transform: scale(1.2) rotate(5deg);
+            }
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 20px;
             display: inline-block;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .modal .modal-sub {
-            color: #9aa4b8;
-            font-size: 14px;
-            margin-bottom: 22px;
-            border-bottom: 1px solid #222b38;
-            padding-bottom: 14px;
+        .feature-card h3 {
+            font-size: 19px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: -0.3px;
         }
 
-        .modal ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 6px 0;
+        .feature-card p {
+            font-size: 14.5px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.6;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 18px 38px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+            color: white;
+            box-shadow: 0 12px 24px rgba(255, 75, 43, 0.25);
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: rotate(45deg);
+            transition: 0.8s;
+            opacity: 0;
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        @media (hover: hover) {
+            .btn-primary:hover {
+                box-shadow: 0 18px 36px rgba(255, 75, 43, 0.4);
+                transform: translateY(-3px) scale(1.02);
+            }
+            .btn-primary:hover::after {
+                left: 120%;
+                opacity: 1;
+            }
+            .btn-ghost:hover {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(255, 255, 255, 0.2);
+                transform: translateY(-3px);
+            }
+        }
+
+        /* --- Уведомление сверху --- */
+        .toast-notification {
+            position: fixed;
+            top: -120px;
+            left: 50%;
+            transform: translate3d(-50%, 0, 0);
+            z-index: 99999999;
+            background: rgba(18, 18, 23, 0.7);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid rgba(255, 75, 43, 0.35);
+            padding: 18px 28px;
+            border-radius: 22px;
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(255, 75, 43, 0.15),
+                inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            opacity: 0;
+            max-width: 90%;
+            width: 440px;
+        }
+
+        .toast-notification.active {
+            top: 30px;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .toast-icon {
+            font-size: 26px;
+            animation: bounceSlow 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes bounceSlow {
+            from { transform: translateY(0) scale(1); }
+            to { transform: translateY(-4px) scale(1.08); }
+        }
+
+        .toast-content { flex-grow: 1; }
+
+        .toast-content h4 {
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 2px;
+            letter-spacing: -0.3px;
+        }
+
+        .toast-content p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.4;
+        }
+
+        /* --- Контекстное Меню --- */
+        .custom-context-menu {
+            position: fixed;
+            display: none;
+            z-index: 9999999;
+            background: rgba(15, 15, 20, 0.75);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 8px;
+            min-width: 240px;
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.7), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.15);
+            transform: scale(0.92);
+            opacity: 0;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+            pointer-events: none;
+        }
+
+        .custom-context-menu.active {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .context-item {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.75);
+            padding: 12px 16px;
             text-align: left;
-        }
-
-        .modal ul li {
-            padding: 12px 0 12px 0;
-            border-bottom: 1px solid #1e2633;
-            color: #d1d8e8;
-            font-size: 15px;
+            font-size: 14.5px;
+            font-weight: 500;
+            font-family: inherit;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             gap: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
         }
 
-        .modal ul li:last-child {
+        @media (hover: hover) {
+            .context-item:hover {
+                background: rgba(255, 75, 43, 0.15);
+                color: #ffffff;
+                transform: translateX(3px);
+            }
+        }
+        
+        .context-item:active {
+            background: rgba(255, 75, 43, 0.25);
+            color: #ffffff;
+        }
+
+        .context-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.06);
+            margin: 6px 8px;
+        }
+
+        /* --- Модальное окно --- */
+        .modal-wrapper {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+
+        .modal-wrapper.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            cursor: pointer; /* Важно для iOS */
+        }
+
+        .modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 620px;
+            padding: 50px;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-wrapper.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 28px;
+            right: 28px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 26px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 10px; /* Увеличена зона клика для мобилок */
+        }
+
+        .close-btn:hover, .close-btn:active {
+            color: white;
+        }
+
+        .spec-list {
+            list-style: none;
+            margin-top: 35px;
+        }
+
+        .spec-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 15px;
+        }
+
+        .spec-list li:last-child {
             border-bottom: none;
         }
 
-        .modal ul li .label {
-            color: #8f9bb3;
-            min-width: 110px;
-            font-weight: 500;
+        .spec-name { color: rgba(255, 255, 255, 0.45); }
+        .spec-value { font-weight: 600; color: #fff; text-align: right; }
+
+        .sys-req {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.08);
         }
 
-        .modal ul li .value {
-            color: #e8edf2;
-            font-weight: 500;
+        .sys-req h4 {
+            color: #ff4b2b;
+            font-weight: 700;
+            margin-bottom: 18px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
-        .modal ul li .badge {
-            background: #f9731620;
-            color: #f97316;
-            padding: 2px 12px;
-            border-radius: 30px;
-            font-size: 12px;
-            border: 1px solid #f9731640;
-            margin-left: auto;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px) scale(0.96);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* ========== ТЕЛЕФОНЫ ========== */
-        @media (max-width: 700px) {
-            body {
-                padding: 10px;
-                align-items: flex-start;
-                padding-top: 20px;
-            }
-
-            .card {
-                padding: 28px 18px;
-                border-radius: 28px;
-                max-width: 100%;
-            }
-
-            .logo {
-                font-size: 40px;
-            }
-
-            .version-badge {
-                font-size: 22px;
-                vertical-align: 0.4em;
-                padding: 0 8px;
-            }
-
-            .subhead {
-                font-size: 16px;
-                margin-bottom: 20px;
-            }
-
-            .features {
-                grid-template-columns: 1fr;
-                gap: 14px;
-                margin: 18px 0 24px 0;
-            }
-
-            .feature-item {
-                padding: 16px 14px;
-            }
-
-            .feature-item h3 {
-                font-size: 18px;
-            }
-
-            .feature-item p {
-                font-size: 15px;
-            }
-
-            .actions {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-                margin-top: 18px;
-            }
-
-            .btn {
-                padding: 16px 20px;
-                font-size: 17px;
-                text-align: center;
-                border-radius: 50px;
-            }
-
-            .footer {
-                font-size: 12px;
-                margin-top: 24px;
-                padding-top: 18px;
-            }
-
-            .modal {
-                padding: 24px 16px;
-                border-radius: 24px;
-                max-width: 100%;
-                width: 95%;
-            }
-
-            .modal h2 {
-                font-size: 24px;
-            }
-
-            .modal ul li {
-                flex-wrap: wrap;
-                gap: 4px;
-                padding: 10px 0;
-                font-size: 14px;
-            }
-
-            .modal ul li .label {
-                min-width: 100%;
-                font-size: 12px;
-                color: #8f9bb3;
-            }
-
-            .modal ul li .value {
-                font-size: 15px;
-            }
-
-            .modal ul li .badge {
-                margin-left: 0;
-                font-size: 11px;
-                padding: 1px 10px;
-            }
-
-            .modal-close {
-                top: 12px;
-                right: 14px;
-                font-size: 28px;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .logo {
-                font-size: 32px;
-            }
-
-            .version-badge {
-                font-size: 18px;
-                vertical-align: 0.3em;
-            }
-
-            .card {
-                padding: 20px 14px;
-            }
-
-            .feature-item h3 {
-                font-size: 16px;
-            }
-
-            .feature-item p {
-                font-size: 14px;
-            }
-        }
-
-        body.no-scroll {
-            overflow: hidden;
+        @media (max-width: 768px) {
+            .main-container { padding: 40px 24px; }
+            h1 { font-size: 44px; }
+            .subtitle { font-size: 17px; }
+            .cta-group { flex-direction: column; }
+            .btn { width: 100%; }
+            .modal-content { padding: 35px 24px; }
+            .spec-list li { flex-direction: column; gap: 6px; }
+            .spec-value { text-align: left; }
+            .toast-notification { width: 100%; top: -150px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="logo-wrapper">
-            <span class="logo">Ferox OS</span>
-            <span class="version-badge">1</span>
-        </div>
-        <div class="subhead">Быстрая. Мощная. Твоя.</div>
+    <div class="glass-cursor" id="cursor"></div>
+    <div class="glass-cursor-follower" id="cursorFollower"></div>
 
-        <hr class="divider">
-
-        <div class="features">
-            <div class="feature-item">
-                <h3>⚡ Лёгкость</h3>
-                <p>Минималистичная сборка без мусора — стартует за секунды.</p>
-            </div>
-            <div class="feature-item">
-                <h3>🎨 Стиль</h3>
-                <p>Уникальная тема Ferox с тёмной эстетикой и анимациями.</p>
-            </div>
-            <div class="feature-item">
-                <h3>🛡️ Надёжность</h3>
-                <p>На базе Ubuntu 26.04 LTS — стабильность и совместимость.</p>
-            </div>
-            <div class="feature-item">
-                <h3>🚀 Для тебя</h3>
-                <p>Создан для тех, кто ценит скорость, контроль и красоту.</p>
-            </div>
-            <div class="feature-item">
-                <h3>🖥️ Гейминг</h3>
-                <p>Готов к играм из коробки — драйверы и Proton уже внутри.</p>
-            </div>
-            <div class="feature-item">
-                <h3>🔒 Безопасность</h3>
-                <p>Минимальный цифровой след и свежие обновления безопасности.</p>
-            </div>
-        </div>
-
-        <div class="actions">
-            <a class="btn btn-primary">Скачать Ferox OS 1</a>
-            <button class="btn btn-secondary" id="openModalBtn">Узнать больше</button>
-        </div>
-
-        <div class="footer">
-            <span>Ferox OS</span> — дистрибутив, созданный с душой. <br>
-            Версия 1 · 2026
+    <div class="toast-notification" id="downloadToast">
+        <div class="toast-icon">📥</div>
+        <div class="toast-content">
+            <h4>Скачивание запущено</h4>
+            <p>ISO-образ Ferox OS v1.0 загружается на ваше устройство.</p>
         </div>
     </div>
 
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <button class="modal-close" id="closeModalBtn" aria-label="Закрыть">✕</button>
-            <h2>Ferox OS 1</h2>
-            <div class="modal-sub">Характеристики и системные требования</div>
-            <ul>
-                <li><span class="label">Версия</span><span class="value">1</span><span class="badge">Стабильная</span></li>
-                <li><span class="label">Основа</span><span class="value">Ubuntu 26.04 LTS</span></li>
-                <li><span class="label">Архитектура</span><span class="value">amd64 (x86_64)</span></li>
-                <li><span class="label">Ядро</span><span class="value">Linux 7.0</span></li>
-                <li><span class="label">Окружение</span><span class="value">GNOME 48</span></li>
-                <li><span class="label">Тема оформления</span><span class="value">Orchis + Tela</span></li>
-                <li><span class="label">Менеджер пакетов</span><span class="value">APT (Debian)</span></li>
-                <li><span class="label">Система инициализации</span><span class="value">systemd</span></li>
+    <div class="custom-context-menu" id="contextMenu">
+        <button class="context-item" id="ctxCopy">
+            <span style="font-size: 16px;">📋</span> Скопировать текст
+        </button>
+        <button class="context-item" id="ctxSpecs">
+            <span style="font-size: 16px;">⚙️</span> Характеристики
+        </button>
+        <button class="context-item" id="ctxDownload">
+            <span style="font-size: 16px;">📥</span> Скачать ISO образ
+        </button>
+        <div class="context-divider"></div>
+        <button class="context-item" id="ctxReload">
+            <span style="font-size: 16px;">🔄</span> Обновить страницу
+        </button>
+    </div>
+
+    <div class="ambient-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="main-container glass-panel">
+        <header class="header-section">
+            <div class="title-wrap">
+                <h1>Ferox OS</h1>
+                <span class="badge-version">v1.0</span>
+            </div>
+            <p class="subtitle">Идеальный баланс эстетики и производительности. Мы взяли за основу проверенную временем стабильность, очистили её от фонового мусора и создали операционную систему, которая просто работает.</p>
+        </header>
+
+        <div class="grid-features">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Абсолютная легкость</h3>
+                <p>Полное отсутствие фоновых трекеров активности и тяжелых служб. Система расходует ресурсы только на то, что запущено лично вами.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎮</div>
+                <h3>Нативный гейминг</h3>
+                <p>Steam, Proton и актуальные видеодрайверы интегрированы на уровне дистрибутива. Запускайте любые игры в один клик.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Приватность из коробки</h3>
+                <p>Встроенный файрвол, автоматическое шифрование DNS-запросов и полное отсутствие отправки телеметрии разработчикам.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Железобетонно</h3>
+                <p>В основе лежит долгосрочная платформа Ubuntu 26.04 LTS и ядро Linux 7.0. Опережайте время, сохраняя полную стабильность.</p>
+            </div>
+        </div>
+
+        <div class="cta-group">
+            <button class="btn btn-primary" id="btnDownloadMain">Скачать ISO образ</button>
+            <button class="btn btn-ghost" id="openSpecs">Спецификации</button>
+        </div>
+    </main>
+
+    <div class="modal-wrapper" id="specsModal">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-content glass-panel">
+            <button class="close-btn" id="closeSpecs">✕</button>
+            <h2 style="font-size: 28px; margin-bottom: 8px; font-weight: 700; letter-spacing: -0.5px;">Под капотом</h2>
+            <p style="color: rgba(255,255,255,0.45); font-size: 14px;">Технический стек и параметры дистрибутива</p>
+
+            <ul class="spec-list">
+                <li><span class="spec-name">База пакетов</span> <span class="spec-value">Ubuntu 26.04 LTS (Jammy)</span></li>
+                <li><span class="spec-name">Версия ядра</span> <span class="spec-value">Linux Kernel 7.0 (Zen patch)</span></li>
+                <li><span class="spec-name">Окружение рабочего стола</span> <span class="spec-value">GNOME 48 (Custom Shell)</span></li>
+                <li><span class="spec-name">Архитектура сборки</span> <span class="spec-value">x86_64 / amd64</span></li>
+                <li><span class="spec-name">Init-система</span> <span class="spec-value">systemd</span></li>
             </ul>
-            <div style="margin-top:20px; border-top:1px solid #222b38; padding-top:16px; text-align:left;">
-                <div style="color:#8f9bb3; font-size:13px; font-weight:600; margin-bottom:6px;">⚙️ Минимальные требования</div>
-                <ul>
-                    <li><span class="label">Процессор</span><span class="value">2 ГГц, 2 ядра</span></li>
-                    <li><span class="label">ОЗУ</span><span class="value">4 ГБ (8 ГБ рекомендуется)</span></li>
-                    <li><span class="label">Диск</span><span class="value">25 ГБ свободного места</span></li>
-                    <li><span class="label">Видеокарта</span><span class="value">OpenGL 3.3+</span></li>
+
+            <div class="sys-req">
+                <h4>Минимальные требования</h4>
+                <ul class="spec-list" style="margin-top: 0;">
+                    <li><span class="spec-name">Процессор</span> <span class="spec-value">Любой 64-bit (от 2 ГГц)</span></li>
+                    <li><span class="spec-name">Оперативная память</span> <span class="spec-value">4 ГБ минимум (рекомендуется 8 ГБ)</span></li>
+                    <li><span class="spec-name">Накопитель</span> <span class="spec-value">25 ГБ свободного места (SSD)</span></li>
                 </ul>
             </div>
         </div>
     </div>
 
     <script>
-        const openBtn = document.getElementById('openModalBtn');
-        const closeBtn = document.getElementById('closeModalBtn');
-        const overlay = document.getElementById('modalOverlay');
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- ОПРЕДЕЛЕНИЕ МОБИЛЬНЫХ УСТРОЙСТВ ---
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-        openBtn.addEventListener('click', function () {
-            overlay.classList.add('active');
-            document.body.classList.add('no-scroll');
-        });
+            // --- МОДАЛЬНОЕ ОКНО ---
+            const modal = document.getElementById('specsModal');
+            const btnOpen = document.getElementById('openSpecs');
+            const btnClose = document.getElementById('closeSpecs');
+            const backdrop = document.getElementById('modalBackdrop');
 
-        closeBtn.addEventListener('click', function () {
-            overlay.classList.remove('active');
-            document.body.classList.remove('no-scroll');
-        });
+            const openModal = () => {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            };
 
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) {
-                overlay.classList.remove('active');
-                document.body.classList.remove('no-scroll');
+            const closeModal = () => {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+
+            btnOpen.addEventListener('click', openModal);
+            btnClose.addEventListener('click', closeModal);
+            backdrop.addEventListener('click', closeModal);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+            });
+
+            // --- УВЕДОМЛЕНИЯ ---
+            const toast = document.getElementById('downloadToast');
+            let toastTimer;
+
+            function triggerDownloadNotification() {
+                toast.classList.remove('active');
+                clearTimeout(toastTimer);
+                setTimeout(() => {
+                    toast.classList.add('active');
+                    toastTimer = setTimeout(() => {
+                        toast.classList.remove('active');
+                    }, 4000);
+                }, 50);
             }
-        });
 
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && overlay.classList.contains('active')) {
-                overlay.classList.remove('active');
-                document.body.classList.remove('no-scroll');
+            document.getElementById('btnDownloadMain').addEventListener('click', triggerDownloadNotification);
+
+            // --- КАСТОМНЫЙ КУРСОР (ТОЛЬКО ДЛЯ ПК) ---
+            const cursor = document.getElementById('cursor');
+            const follower = document.getElementById('cursorFollower');
+            
+            if (!isTouchDevice) {
+                let mouseX = window.innerWidth / 2;
+                let mouseY = window.innerHeight / 2;
+                let followX = window.innerWidth / 2;
+                let followY = window.innerHeight / 2;
+                const ease = 0.15;
+
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate3d(-50%, -50%, 0)`;
+                });
+
+                function render() {
+                    followX += (mouseX - followX) * ease;
+                    followY += (mouseY - followY) * ease;
+                    follower.style.transform = `translate3d(${followX}px, ${followY}px, 0) translate3d(-50%, -50%, 0)`;
+                    requestAnimationFrame(render);
+                }
+                render();
+
+                document.addEventListener('mouseover', (e) => {
+                    if (e.target.closest('button, a, .feature-card, .close-btn, .context-item, .toast-notification')) {
+                        document.body.classList.add('cursor-hover');
+                    } else {
+                        document.body.classList.remove('cursor-hover');
+                    }
+                });
+            } else {
+                // Прячем DOM элементы курсора на телефонах, чтобы они не перекрывали клики
+                cursor.style.display = 'none';
+                follower.style.display = 'none';
             }
+
+            // --- КОНТЕКСТНОЕ МЕНЮ (ПК + СЕНСОР) ---
+            const contextMenu = document.getElementById('contextMenu');
+            const ctxCopy = document.getElementById('ctxCopy');
+            const ctxSpecs = document.getElementById('ctxSpecs');
+            const ctxDownload = document.getElementById('ctxDownload');
+            const ctxReload = document.getElementById('ctxReload');
+            const divider = document.querySelector('.context-divider');
+
+            function showContextMenu(x, y) {
+                const hasSelection = window.getSelection().toString().trim().length > 0;
+
+                if (hasSelection) {
+                    ctxCopy.style.display = 'flex';
+                    ctxSpecs.style.display = 'none';
+                    ctxDownload.style.display = 'none';
+                    ctxReload.style.display = 'none';
+                    divider.style.display = 'none';
+                } else {
+                    ctxCopy.style.display = 'none';
+                    ctxSpecs.style.display = 'flex';
+                    ctxDownload.style.display = 'flex';
+                    ctxReload.style.display = 'flex';
+                    divider.style.display = 'block';
+                }
+
+                const menuWidth = 240;
+                const menuHeight = hasSelection ? 60 : 220;
+                
+                if (x + menuWidth > window.innerWidth) x = window.innerWidth - menuWidth - 15;
+                if (y + menuHeight > window.innerHeight) y = window.innerHeight - menuHeight - 15;
+                
+                contextMenu.style.left = `${x}px`;
+                contextMenu.style.top = `${y}px`;
+                contextMenu.style.display = 'block';
+                
+                setTimeout(() => contextMenu.classList.add('active'), 10);
+            }
+
+            function closeContextMenu() {
+                contextMenu.classList.remove('active');
+                setTimeout(() => {
+                    if (!contextMenu.classList.contains('active')) {
+                        contextMenu.style.display = 'none';
+                    }
+                }, 200);
+            }
+
+            // Вызов меню на ПК (Правый клик)
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showContextMenu(e.clientX, e.clientY);
+            });
+
+            // Вызов меню на телефоне (Удержание пальца)
+            let touchTimer;
+            document.addEventListener('touchstart', (e) => {
+                if (contextMenu.contains(e.target) || e.touches.length > 1) return;
+                
+                touchTimer = setTimeout(() => {
+                    showContextMenu(e.touches[0].clientX, e.touches[0].clientY);
+                }, 500); // 500мс удержание
+            }, { passive: true });
+
+            document.addEventListener('touchend', () => clearTimeout(touchTimer));
+            document.addEventListener('touchmove', () => clearTimeout(touchTimer));
+
+            // Закрытие меню
+            document.addEventListener('click', (e) => {
+                if (!contextMenu.contains(e.target)) closeContextMenu();
+            });
+
+            // Действия кнопок меню
+            ctxCopy.addEventListener('click', () => {
+                const selectedText = window.getSelection().toString();
+                if (selectedText) navigator.clipboard.writeText(selectedText);
+                closeContextMenu();
+            });
+
+            ctxSpecs.addEventListener('click', () => {
+                closeContextMenu();
+                openModal();
+            });
+
+            ctxDownload.addEventListener('click', () => {
+                closeContextMenu();
+                triggerDownloadNotification();
+            });
+
+            ctxReload.addEventListener('click', () => {
+                window.location.reload();
+            });
         });
     </script>
-
 </body>
 </html>
