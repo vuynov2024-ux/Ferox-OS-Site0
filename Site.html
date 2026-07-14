@@ -20,12 +20,6 @@
             color: #ffffff;
             text-shadow: 0 0 12px rgba(255, 75, 43, 0.9), 0 0 2px rgba(255, 255, 255, 0.5);
         }
-        
-        ::-moz-selection {
-            background: rgba(255, 75, 43, 0.35);
-            color: #ffffff;
-            text-shadow: 0 0 12px rgba(255, 75, 43, 0.9), 0 0 2px rgba(255, 255, 255, 0.5);
-        }
 
         body {
             background-color: #08080a;
@@ -262,16 +256,12 @@
                     0 20px 40px rgba(0, 0, 0, 0.3),
                     inset 0 1px 0 rgba(255, 255, 255, 0.1);
             }
-            .feature-card:hover .feature-icon {
-                transform: scale(1.2) rotate(5deg);
-            }
         }
 
         .feature-icon {
             font-size: 32px;
             margin-bottom: 20px;
             display: inline-block;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .feature-card h3 {
@@ -319,19 +309,6 @@
             box-shadow: 0 12px 24px rgba(255, 75, 43, 0.25);
         }
 
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-            transform: rotate(45deg);
-            transition: 0.8s;
-            opacity: 0;
-        }
-
         .btn-ghost {
             background: rgba(255, 255, 255, 0.04);
             color: white;
@@ -343,10 +320,6 @@
                 box-shadow: 0 18px 36px rgba(255, 75, 43, 0.4);
                 transform: translateY(-3px) scale(1.02);
             }
-            .btn-primary:hover::after {
-                left: 120%;
-                opacity: 1;
-            }
             .btn-ghost:hover {
                 background: rgba(255, 255, 255, 0.08);
                 border-color: rgba(255, 255, 255, 0.2);
@@ -357,24 +330,24 @@
         /* --- Уведомление сверху --- */
         .toast-notification {
             position: fixed;
-            top: -120px;
+            top: -150px;
             left: 50%;
             transform: translate3d(-50%, 0, 0);
             z-index: 99999999;
-            background: rgba(18, 18, 23, 0.7);
+            background: rgba(18, 18, 23, 0.85);
             backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid rgba(255, 75, 43, 0.35);
+            border: 1px solid rgba(255, 75, 43, 0.4);
             padding: 18px 28px;
             border-radius: 22px;
             box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.6),
-                0 0 40px rgba(255, 75, 43, 0.15),
-                inset 0 1px 1px rgba(255, 255, 255, 0.15);
+                0 30px 60px rgba(0, 0, 0, 0.7),
+                0 0 40px rgba(255, 75, 43, 0.2),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             gap: 18px;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
             opacity: 0;
             max-width: 90%;
@@ -389,12 +362,6 @@
 
         .toast-icon {
             font-size: 26px;
-            animation: bounceSlow 2s infinite alternate ease-in-out;
-        }
-
-        @keyframes bounceSlow {
-            from { transform: translateY(0) scale(1); }
-            to { transform: translateY(-4px) scale(1.08); }
         }
 
         .toast-content { flex-grow: 1; }
@@ -458,19 +425,6 @@
             cursor: pointer;
         }
 
-        @media (hover: hover) {
-            .context-item:hover {
-                background: rgba(255, 75, 43, 0.15);
-                color: #ffffff;
-                transform: translateX(3px);
-            }
-        }
-        
-        .context-item:active {
-            background: rgba(255, 75, 43, 0.25);
-            color: #ffffff;
-        }
-
         .context-divider {
             height: 1px;
             background: rgba(255, 255, 255, 0.06);
@@ -502,7 +456,6 @@
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            cursor: pointer;
         }
 
         .modal-content {
@@ -514,7 +467,6 @@
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             max-height: 90vh;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
         }
 
         .modal-wrapper.active .modal-content {
@@ -529,13 +481,8 @@
             border: none;
             color: rgba(255, 255, 255, 0.35);
             font-size: 26px;
-            transition: all 0.3s ease;
-            cursor: pointer;
             padding: 10px;
-        }
-
-        .close-btn:hover, .close-btn:active {
-            color: white;
+            cursor: pointer;
         }
 
         .spec-list {
@@ -551,10 +498,7 @@
             font-size: 15px;
         }
 
-        .spec-list li:last-child {
-            border-bottom: none;
-        }
-
+        .spec-list li:last-child { border-bottom: none; }
         .spec-name { color: rgba(255, 255, 255, 0.45); }
         .spec-value { font-weight: 600; color: #fff; text-align: right; }
 
@@ -582,7 +526,7 @@
             .modal-content { padding: 35px 24px; }
             .spec-list li { flex-direction: column; gap: 6px; }
             .spec-value { text-align: left; }
-            .toast-notification { width: 100%; top: -150px; }
+            .toast-notification { width: 100%; }
         }
     </style>
 </head>
@@ -591,6 +535,7 @@
     <div class="glass-cursor" id="cursor"></div>
     <div class="glass-cursor-follower" id="cursorFollower"></div>
 
+    <!-- Уведомление -->
     <div class="toast-notification" id="downloadToast">
         <div class="toast-icon">📥</div>
         <div class="toast-content">
@@ -599,20 +544,13 @@
         </div>
     </div>
 
+    <!-- Меню -->
     <div class="custom-context-menu" id="contextMenu">
-        <button class="context-item" id="ctxCopy">
-            <span style="font-size: 16px;">📋</span> Скопировать текст
-        </button>
-        <button class="context-item" id="ctxSpecs">
-            <span style="font-size: 16px;">⚙️</span> Характеристики
-        </button>
-        <button class="context-item" id="ctxDownload">
-            <span style="font-size: 16px;">📥</span> Скачать ISO образ
-        </button>
+        <button class="context-item" id="ctxCopy">📋 Скопировать текст</button>
+        <button class="context-item" id="ctxSpecs">⚙️ Характеристики</button>
+        <button class="context-item" id="ctxDownload">📥 Скачать ISO образ</button>
         <div class="context-divider"></div>
-        <button class="context-item" id="ctxReload">
-            <span style="font-size: 16px;">🔄</span> Обновить страницу
-        </button>
+        <button class="context-item" id="ctxReload">🔄 Обновить страницу</button>
     </div>
 
     <div class="ambient-bg">
@@ -649,7 +587,7 @@
             <div class="feature-card">
                 <div class="feature-icon">🛡️</div>
                 <h3>Железобетонно</h3>
-                <p>В основе лежит долгосрочная платформа Ubuntu 26.04 LTS и ядро Linux 7.0. Опережайте время, сохраняя полную стабильность.</p>
+                <p>В основе лежит долгосрочная платформа Ubuntu 26.04 LTS и ядро Linux 7.0.</p>
             </div>
         </div>
 
@@ -659,6 +597,7 @@
         </div>
     </main>
 
+    <!-- Модалка -->
     <div class="modal-wrapper" id="specsModal">
         <div class="modal-backdrop" id="modalBackdrop"></div>
         <div class="modal-content glass-panel">
@@ -668,18 +607,17 @@
 
             <ul class="spec-list">
                 <li><span class="spec-name">База пакетов</span> <span class="spec-value">Ubuntu 26.04 LTS</span></li>
-                <li><span class="spec-name">Версия ядра</span> <span class="spec-value">Linux Kernel 7.0 (Zen patch)</span></li>
-                <li><span class="spec-name">Окружение рабочего стола</span> <span class="spec-value">GNOME 48 (Custom Shell)</span></li>
-                <li><span class="spec-name">Архитектура сборки</span> <span class="spec-value">x86_64 / amd64</span></li>
-                <li><span class="spec-name">Init-система</span> <span class="spec-value">systemd</span></li>
+                <li><span class="spec-name">Версия ядра</span> <span class="spec-value">Linux Kernel 7.0</span></li>
+                <li><span class="spec-name">Окружение</span> <span class="spec-value">GNOME 48</span></li>
+                <li><span class="spec-name">Архитектура</span> <span class="spec-value">x86_64 / amd64</span></li>
             </ul>
 
             <div class="sys-req">
                 <h4>Минимальные требования</h4>
                 <ul class="spec-list" style="margin-top: 0;">
                     <li><span class="spec-name">Процессор</span> <span class="spec-value">Любой 64-bit (от 2 ГГц)</span></li>
-                    <li><span class="spec-name">Оперативная память</span> <span class="spec-value">4 ГБ минимум (рекомендуется 8 ГБ)</span></li>
-                    <li><span class="spec-name">Накопитель</span> <span class="spec-value">25 ГБ свободного места (SSD)</span></li>
+                    <li><span class="spec-name">Оперативная память</span> <span class="spec-value">4 ГБ минимум</span></li>
+                    <li><span class="spec-name">Накопитель</span> <span class="spec-value">25 ГБ (SSD)</span></li>
                 </ul>
             </div>
         </div>
@@ -690,9 +628,8 @@
             
             const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
             let targetDeviceText = "на ваше устройство";
-            let pressTimer;
 
-            // --- 1. УМНОЕ ОПРЕДЕЛЕНИЕ УСТРОЙСТВА ---
+            // --- 1. ОПРЕДЕЛЕНИЕ УСТРОЙСТВА ---
             async function detectDevice() {
                 const ua = navigator.userAgent;
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
@@ -702,6 +639,7 @@
                         const width = window.screen.width;
                         const height = window.screen.height;
                         const dpr = window.devicePixelRatio;
+                        // Размеры экрана iPhone 11 в поинтах
                         const isIphone11Size = (width === 414 && height === 896) || (width === 896 && height === 414);
                         
                         if (isIphone11Size && dpr === 2) {
@@ -753,21 +691,17 @@
             btnClose.addEventListener('click', closeModal);
             backdrop.addEventListener('click', closeModal);
 
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
-            });
-
-            // --- 3. УВЕДОМЛЕНИЯ (С ОПРЕДЕЛЕНИЕМ ДЕВАЙСА) ---
+            // --- 3. УВЕДОМЛЕНИЯ ---
             const toast = document.getElementById('downloadToast');
             const toastDeviceText = document.getElementById('toastDeviceText');
             let toastTimer;
 
             function triggerDownloadNotification() {
-                // Подставляем определенный девайс прямо в уведомление
                 toastDeviceText.textContent = `ISO-образ Ferox OS v1.0 загружается ${targetDeviceText}.`;
 
                 toast.classList.remove('active');
                 clearTimeout(toastTimer);
+                
                 setTimeout(() => {
                     toast.classList.add('active');
                     toastTimer = setTimeout(() => {
@@ -776,28 +710,16 @@
                 }, 50);
             }
 
-            // --- 4. НАЖАТИЕ НА ГЛАВНУЮ КНОПКУ (ТАП vs КЛИК) ---
+            // --- 4. НАЖАТИЕ НА ГЛАВНУЮ КНОПКУ (ИСПРАВЛЕНО) ---
             const mainDownloadBtn = document.getElementById('btnDownloadMain');
 
-            if (isTouchDevice) {
-                // На сенсорах зажатие 0.3 сек
-                mainDownloadBtn.addEventListener('touchstart', (e) => {
-                    pressTimer = setTimeout(() => {
-                        triggerDownloadNotification();
-                    }, 300); 
-                });
-                mainDownloadBtn.addEventListener('touchend', () => clearTimeout(pressTimer));
-                mainDownloadBtn.addEventListener('touchmove', () => clearTimeout(pressTimer));
-                mainDownloadBtn.addEventListener('click', (e) => e.preventDefault());
-            } else {
-                // На ПК обычный клик
-                mainDownloadBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    triggerDownloadNotification();
-                });
-            }
+            // Теперь это обычный универсальный клик, который без проблем работает на iOS
+            mainDownloadBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                triggerDownloadNotification();
+            });
 
-            // --- 5. КАСТОМНЫЙ КУРСОР (ТОЛЬКО ДЛЯ ПК) ---
+            // --- 5. КУРСОР (ПК) ---
             const cursor = document.getElementById('cursor');
             const follower = document.getElementById('cursorFollower');
             
@@ -823,7 +745,7 @@
                 render();
 
                 document.addEventListener('mouseover', (e) => {
-                    if (e.target.closest('button, a, .feature-card, .close-btn, .context-item, .toast-notification')) {
+                    if (e.target.closest('button, a, .feature-card, .close-btn, .context-item')) {
                         document.body.classList.add('cursor-hover');
                     } else {
                         document.body.classList.remove('cursor-hover');
@@ -834,7 +756,7 @@
                 follower.style.display = 'none';
             }
 
-            // --- 6. КОНТЕКСТНОЕ МЕНЮ (ПК + СЕНСОР) ---
+            // --- 6. КОНТЕКСТНОЕ МЕНЮ ---
             const contextMenu = document.getElementById('contextMenu');
             const ctxCopy = document.getElementById('ctxCopy');
             const ctxSpecs = document.getElementById('ctxSpecs');
@@ -843,7 +765,8 @@
             const divider = document.querySelector('.context-divider');
 
             function showContextMenu(x, y) {
-                const hasSelection = window.getSelection().toString().trim().length > 0;
+                const selectedText = window.getSelection().toString().trim();
+                const hasSelection = selectedText.length > 0;
 
                 if (hasSelection) {
                     ctxCopy.style.display = 'flex';
@@ -859,8 +782,8 @@
                     divider.style.display = 'block';
                 }
 
-                const menuWidth = 240;
-                const menuHeight = hasSelection ? 60 : 220;
+                let menuWidth = 240;
+                let menuHeight = hasSelection ? 50 : 210;
                 
                 if (x + menuWidth > window.innerWidth) x = window.innerWidth - menuWidth - 15;
                 if (y + menuHeight > window.innerHeight) y = window.innerHeight - menuHeight - 15;
@@ -886,11 +809,9 @@
                 showContextMenu(e.clientX, e.clientY);
             });
 
-            // На мобилках вызов меню долгим зажатием на свободном месте
             let touchMenuTimer;
             document.addEventListener('touchstart', (e) => {
                 if (contextMenu.contains(e.target) || e.touches.length > 1) return;
-                
                 touchMenuTimer = setTimeout(() => {
                     showContextMenu(e.touches[0].clientX, e.touches[0].clientY);
                 }, 600); 
@@ -904,8 +825,8 @@
             });
 
             ctxCopy.addEventListener('click', () => {
-                const selectedText = window.getSelection().toString();
-                if (selectedText) navigator.clipboard.writeText(selectedText);
+                const text = window.getSelection().toString();
+                if (text) navigator.clipboard.writeText(text);
                 closeContextMenu();
             });
 
