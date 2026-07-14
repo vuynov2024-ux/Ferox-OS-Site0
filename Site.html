@@ -33,6 +33,7 @@
             position: relative;
             overflow-x: hidden;
             -webkit-touch-callout: none;
+            transition: background-color 0.5s ease;
         }
 
         /* Интерактивный курсор для десктопов */
@@ -106,9 +107,7 @@
         .blob {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
             opacity: 0.55;
-            animation: drift 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .blob-1 {
@@ -125,7 +124,6 @@
             background: linear-gradient(135deg, #00c6ff, #0072ff);
             bottom: -25%;
             right: -15%;
-            animation-delay: -6s;
         }
 
         .blob-3 {
@@ -134,13 +132,6 @@
             background: linear-gradient(135deg, #f9d423, #ff4e50);
             top: 35%;
             left: 35%;
-            animation-delay: -12s;
-        }
-
-        @keyframes drift {
-            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-            50% { transform: translate(8%, 12%) scale(1.1) rotate(180deg); }
-            100% { transform: translate(-4%, -8%) scale(0.95) rotate(360deg); }
         }
 
         .glass-panel {
@@ -152,6 +143,7 @@
             box-shadow: 
                 0 40px 80px rgba(0, 0, 0, 0.6), 
                 inset 0 1px 1px rgba(255, 255, 255, 0.12);
+            transition: all 0.5s ease;
         }
 
         .main-container {
@@ -160,13 +152,6 @@
             padding: 60px;
             position: relative;
             z-index: 10;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: slideInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes slideInUp {
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .header-section {
@@ -201,13 +186,7 @@
             font-weight: 700;
             font-size: 16px;
             letter-spacing: 0.5px;
-            box-shadow: 0 0 20px rgba(255, 75, 43, 0.15);
-            animation: pulseGlow 2.5s infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 15px rgba(255, 75, 43, 0.1); }
-            100% { box-shadow: 0 0 25px rgba(255, 75, 43, 0.3); border-color: rgba(255, 75, 43, 0.4); }
+            transition: all 0.5s ease;
         }
 
         .subtitle {
@@ -233,29 +212,6 @@
             padding: 30px 24px;
             border-radius: 24px;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: cardFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .feature-card:nth-child(1) { animation-delay: 0.2s; }
-        .feature-card:nth-child(2) { animation-delay: 0.3s; }
-        .feature-card:nth-child(3) { animation-delay: 0.4s; }
-        .feature-card:nth-child(4) { animation-delay: 0.5s; }
-
-        @keyframes cardFadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (hover: hover) {
-            .feature-card:hover {
-                background: rgba(255, 255, 255, 0.05);
-                transform: translateY(-6px) scale(1.01);
-                border-color: rgba(255, 255, 255, 0.12);
-                box-shadow: 
-                    0 20px 40px rgba(0, 0, 0, 0.3),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            }
         }
 
         .feature-icon {
@@ -315,18 +271,6 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        @media (hover: hover) {
-            .btn-primary:hover {
-                box-shadow: 0 18px 36px rgba(255, 75, 43, 0.4);
-                transform: translateY(-3px) scale(1.02);
-            }
-            .btn-ghost:hover {
-                background: rgba(255, 255, 255, 0.08);
-                border-color: rgba(255, 255, 255, 0.2);
-                transform: translateY(-3px);
-            }
-        }
-
         /* Блок режима быстродействия */
         .perf-section {
             margin-top: 45px;
@@ -376,9 +320,6 @@
             display: flex;
             align-items: center;
             gap: 18px;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
-            opacity: 0;
             max-width: 90%;
             width: 460px;
         }
@@ -386,7 +327,6 @@
         .toast-notification.active {
             top: 30px;
             opacity: 1;
-            pointer-events: auto;
         }
 
         .toast-icon {
@@ -426,14 +366,11 @@
                 inset 0 1px 1px rgba(255, 255, 255, 0.15);
             transform: scale(0.92);
             opacity: 0;
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
-            pointer-events: none;
         }
 
         .custom-context-menu.active {
             transform: scale(1);
             opacity: 1;
-            pointer-events: auto;
         }
 
         .context-item {
@@ -485,6 +422,7 @@
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
+            transition: all 0.5s ease;
         }
 
         .modal-content {
@@ -493,7 +431,6 @@
             max-width: 620px;
             padding: 50px;
             transform: translateY(30px) scale(0.95);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -546,7 +483,7 @@
             letter-spacing: 1.5px;
         }
 
-        /* --- МЕДИА-ЗАПРОСЫ: МОБИЛЬНАЯ АДАПТАЦИЯ И КРАСИВЫЙ ФОН --- */
+        /* Адаптация под телефоны */
         @media (max-width: 768px) {
             .main-container { padding: 40px 24px; border-radius: 30px; }
             h1 { font-size: 44px; }
@@ -558,33 +495,174 @@
             .spec-value { text-align: left; }
             .toast-notification { width: 100%; }
             .btn-perf-toggle { width: 100%; min-width: unset; }
+        }
 
-            /* Делаем фоновые круги крупнее и ближе к центру, чтобы они были сочно видны на телефонах */
-            .blob {
-                filter: blur(65px); 
-                opacity: 0.65; 
-            }
-            .blob-1 {
-                width: 85vw;
-                height: 85vw;
-                top: -10%;
-                left: -25%;
-            }
-            .blob-2 {
-                width: 80vw;
-                height: 80vw;
-                bottom: -15%;
-                right: -25%;
-            }
-            .blob-3 {
-                width: 70vw;
-                height: 70vw;
-                top: 30%;
-                left: 10%;
+
+        /* ========================================================================= */
+        /* 💥 СВЕРХТЯЖЕЛЫЕ АНИМАЦИИ — АКТИВНЫ ТОЛЬКО БЕЗ РЕЖИМА БЫСТРОДЕЙСТВИЯ     */
+        /* ========================================================================= */
+
+        /* 1. ФОНОВЫЕ СФЕРЫ С ПЕРЕЛИВОМ ЦВЕТА И ВРАЩЕНИЕМ */
+        body:not(.perf-mode-active) .blob {
+            filter: blur(100px);
+            animation: cosmicDrift 22s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body:not(.perf-mode-active) .blob-2 {
+            animation-delay: -6s;
+        }
+        body:not(.perf-mode-active) .blob-3 {
+            animation-delay: -12s;
+        }
+        @media (max-width: 768px) {
+            body:not(.perf-mode-active) .blob {
+                filter: blur(65px);
             }
         }
 
-        /* --- ДИНАМИЧЕСКИЙ РЕЖИМ МАКСИМАЛЬНОГО БЫСТРОДЕЙСТВИЯ (ВЫКЛЮЧАЕМ ЭФФЕКТЫ) --- */
+        @keyframes cosmicDrift {
+            0% { 
+                transform: translate(0, 0) scale(1) rotate(0deg); 
+                filter: blur(100px) hue-rotate(0deg); 
+            }
+            50% { 
+                transform: translate(12%, 15%) scale(1.2) rotate(180deg); 
+                filter: blur(80px) hue-rotate(120deg); 
+            }
+            100% { 
+                transform: translate(-8%, -10%) scale(0.9) rotate(360deg); 
+                filter: blur(100px) hue-rotate(360deg); 
+            }
+        }
+
+        /* 2. ПЕРЕЛИВАЮЩИЙСЯ ХРОМАТИЧЕСКИЙ ЗАГОЛОВОК H1 */
+        body:not(.perf-mode-active) h1 {
+            background: linear-gradient(120deg, #ffffff 15%, #ff4b2b 45%, #00c6ff 70%, #ffffff 85%);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textShimmer 8s linear infinite;
+        }
+
+        @keyframes textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 150% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        /* 3. КАРТОЧКИ В РЕЖИМЕ "ЛЕВИТАЦИИ" (ZERO-GRAVITY FLOAT) */
+        body:not(.perf-mode-active) .feature-card {
+            animation: zeroGravity 6s ease-in-out infinite alternate;
+        }
+        body:not(.perf-mode-active) .feature-card:nth-child(1) { animation-delay: 0s; }
+        body:not(.perf-mode-active) .feature-card:nth-child(2) { animation-delay: -1.5s; }
+        body:not(.perf-mode-active) .feature-card:nth-child(3) { animation-delay: -3s; }
+        body:not(.perf-mode-active) .feature-card:nth-child(4) { animation-delay: -4.5s; }
+
+        @keyframes zeroGravity {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-12px); }
+        }
+
+        /* Более агрессивный интерактивный ховер для карточек */
+        @media (hover: hover) {
+            body:not(.perf-mode-active) .feature-card:hover {
+                animation-play-state: paused; /* застывает при наведении */
+                background: rgba(255, 255, 255, 0.06);
+                transform: translateY(-16px) scale(1.03);
+                border-color: rgba(255, 75, 43, 0.4);
+                box-shadow: 
+                    0 25px 50px rgba(255, 75, 43, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        /* 4. МЯГКОЕ "ДЫХАНИЕ" ГЛАВНОЙ СТЕКЛЯННОЙ ПАНЕЛИ */
+        body:not(.perf-mode-active) .main-container {
+            animation: glassBreathing 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes glassBreathing {
+            0% {
+                border-color: rgba(255, 255, 255, 0.07);
+                box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+            }
+            100% {
+                border-color: rgba(255, 75, 43, 0.15);
+                box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 75, 43, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        /* 5. ПОСТОЯННОЕ ПУЛЬСИРУЮЩЕЕ СВЕЧЕНИЕ КНОПКИ СКАЧИВАНИЯ */
+        body:not(.perf-mode-active) .btn-primary {
+            background: linear-gradient(135deg, #ff4b2b, #ff416c, #ff4b2b);
+            background-size: 200% auto;
+            animation: buttonGradiantFlow 3s linear infinite, buttonPulseGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes buttonGradiantFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        @keyframes buttonPulseGlow {
+            0% { box-shadow: 0 8px 20px rgba(255, 75, 43, 0.25); }
+            100% { box-shadow: 0 14px 32px rgba(255, 75, 43, 0.5), 0 0 15px rgba(255, 75, 43, 0.3); }
+        }
+
+        /* Блик-эффект на кнопке "Спецификации" при ховере */
+        body:not(.perf-mode-active) .btn-ghost::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: skewX(-25deg);
+        }
+        body:not(.perf-mode-active) .btn-ghost:hover::before {
+            animation: laserSweep 1s ease forwards;
+        }
+        @keyframes laserSweep {
+            100% { left: 150%; }
+        }
+
+        /* 6. ПУЛЬСИРУЮЩИЙ КУРСОР И ЕГО ШЛЕЙФ */
+        body:not(.perf-mode-active) .glass-cursor-follower {
+            animation: followerPulse 2.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes followerPulse {
+            0% {
+                border-color: rgba(255, 255, 255, 0.25);
+                box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.3), 0 8px 24px rgba(0, 0, 0, 0.2);
+            }
+            100% {
+                border-color: rgba(255, 75, 43, 0.55);
+                box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5), 0 12px 30px rgba(255, 75, 43, 0.25);
+            }
+        }
+
+        /* Постоянно мерцающий оранжевым неоном бейдж версии */
+        body:not(.perf-mode-active) .badge-version {
+            animation: badgePulse 2s infinite alternate;
+        }
+
+        @keyframes badgePulse {
+            0% { box-shadow: 0 0 12px rgba(255, 75, 43, 0.1); border-color: rgba(255, 75, 43, 0.25); }
+            100% { box-shadow: 0 0 25px rgba(255, 75, 43, 0.45); border-color: rgba(255, 75, 43, 0.65); }
+        }
+
+        /* 7. ЭЛАСТИЧНЫЙ ПРУЖИНЯЩИЙ ОТСКОК ДЛЯ ВСЕХ ОКОН */
+        body:not(.perf-mode-active) .modal-content,
+        body:not(.perf-mode-active) .toast-notification,
+        body:not(.perf-mode-active) .custom-context-menu {
+            transition: all 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ========================================================================= */
+        /* ⚡️ РЕЖИМ МАКСИМАЛЬНОГО БЫСТРОДЕЙСТВИЯ (STATIC / ULTRA LIGHTWEIGHT)     */
+        /* ========================================================================= */
+
         body.perf-mode-active .glass-panel,
         body.perf-mode-active .toast-notification,
         body.perf-mode-active .custom-context-menu,
@@ -594,7 +672,7 @@
             -webkit-backdrop-filter: none !important;
         }
 
-        /* Заменяем прозрачное стекло на оптимизированную непрозрачную подложку */
+        /* Оптимизированные плоские подложки без прозрачности */
         body.perf-mode-active .glass-panel {
             background: #121217 !important; 
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -609,11 +687,12 @@
             background: #14141a !important;
         }
 
-        /* --- КУРСОР БЕЗ LIQUID GLASS В РЕЖИМЕ СВЕРХБЫСТРОДЕЙСТВИЯ --- */
+        /* КУРСОР БЕЗ LIQUID GLASS В РЕЖИМЕ СВЕРХБЫСТРОДЕЙСТВИЯ */
         body.perf-mode-active .glass-cursor-follower {
             background: rgba(255, 255, 255, 0.12) !important;
             border: 1px solid rgba(255, 255, 255, 0.35) !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s, border-color 0.3s;
         }
         
         body.perf-mode-active.cursor-hover .glass-cursor-follower {
@@ -622,24 +701,26 @@
             box-shadow: 0 4px 16px rgba(255, 75, 43, 0.15) !important;
         }
 
-        /* Отключаем анимацию плавающих кругов и пульсацию для идеального FPS */
+        /* Обычные плавные переходы без пружинящих расчетов */
+        body.perf-mode-active .modal-content,
+        body.perf-mode-active .toast-notification,
+        body.perf-mode-active .custom-context-menu {
+            transition: transform 0.2s ease, opacity 0.2s ease, top 0.3s ease;
+        }
+
+        /* Заморозка движения фоновых кругов */
         body.perf-mode-active .blob {
             animation: none !important;
             transform: none !important;
         }
-        body.perf-mode-active .badge-version {
-            animation: none !important;
-            box-shadow: 0 4px 12px rgba(255, 75, 43, 0.15);
-        }
-        body.perf-mode-active .main-container {
-            animation: none !important; 
-            opacity: 1;
-            transform: translateY(0);
-        }
-        body.perf-mode-active .feature-card {
-            animation: none !important;
-            opacity: 1;
-            transform: translateY(0);
+
+        /* Десктоп-адаптация для карточек в режиме быстродействия */
+        @media (hover: hover) {
+            body.perf-mode-active .feature-card:hover {
+                background: rgba(255, 255, 255, 0.05);
+                transform: translateY(-4px);
+                border-color: rgba(255, 255, 255, 0.12);
+            }
         }
     </style>
 </head>
