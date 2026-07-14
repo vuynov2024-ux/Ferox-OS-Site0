@@ -517,8 +517,9 @@
             letter-spacing: 1.5px;
         }
 
+        /* --- МЕДИА-ЗАПРОСЫ: МОБИЛЬНАЯ АДАПТАЦИЯ И КРАСИВЫЙ ФОН --- */
         @media (max-width: 768px) {
-            .main-container { padding: 40px 24px; }
+            .main-container { padding: 40px 24px; border-radius: 30px; }
             h1 { font-size: 44px; }
             .subtitle { font-size: 17px; }
             .cta-group { flex-direction: column; }
@@ -527,6 +528,74 @@
             .spec-list li { flex-direction: column; gap: 6px; }
             .spec-value { text-align: left; }
             .toast-notification { width: 100%; }
+
+            /* Делаем фоновые круги крупнее и ближе к центру, чтобы они были сочно видны на телефонах */
+            .blob {
+                filter: blur(65px); /* Чуть уменьшаем размытие, чтобы цвет не растворялся */
+                opacity: 0.65; /* Делаем капельку ярче */
+            }
+            .blob-1 {
+                width: 85vw;
+                height: 85vw;
+                top: -10%;
+                left: -25%;
+            }
+            .blob-2 {
+                width: 80vw;
+                height: 80vw;
+                bottom: -15%;
+                right: -25%;
+            }
+            .blob-3 {
+                width: 70vw;
+                height: 70vw;
+                top: 30%;
+                left: 10%;
+            }
+        }
+
+        /* --- СТИЛИ ОПТИМИЗАЦИИ ДЛЯ ANDROID (ВЫКЛЮЧАЕМ ЖИДКОЕ СТЕКЛО И АНИМАЦИИ) --- */
+        body.is-android .glass-panel,
+        body.is-android .toast-notification,
+        body.is-android .custom-context-menu,
+        body.is-android .modal-backdrop {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        /* Заменяем прозрачное стекло на стильную, оптимизированную непрозрачную подложку */
+        body.is-android .glass-panel {
+            background: #121217 !important; 
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        body.is-android .toast-notification {
+            background: #16161f !important;
+        }
+        body.is-android .custom-context-menu {
+            background: #0f0f14 !important;
+        }
+        body.is-android .modal-content {
+            background: #14141a !important;
+        }
+
+        /* Выключаем тяжелую анимацию плавающих кругов и пульсацию на Android для стабильных 60 FPS */
+        body.is-android .blob {
+            animation: none !important;
+            transform: none !important;
+        }
+        body.is-android .badge-version {
+            animation: none !important;
+            box-shadow: 0 4px 12px rgba(255, 75, 43, 0.15);
+        }
+        body.is-android .main-container {
+            animation: none !important; /* Убираем стартовую анимацию появления */
+            opacity: 1;
+            transform: translateY(0);
+        }
+        body.is-android .feature-card {
+            animation: none !important;
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -535,7 +604,6 @@
     <div class="glass-cursor" id="cursor"></div>
     <div class="glass-cursor-follower" id="cursorFollower"></div>
 
-    <!-- Уведомление -->
     <div class="toast-notification" id="downloadToast">
         <div class="toast-icon">📥</div>
         <div class="toast-content">
@@ -544,7 +612,6 @@
         </div>
     </div>
 
-    <!-- Меню -->
     <div class="custom-context-menu" id="contextMenu">
         <button class="context-item" id="ctxCopy">📋 Скопировать текст</button>
         <button class="context-item" id="ctxSpecs">⚙️ Характеристики</button>
@@ -597,7 +664,6 @@
         </div>
     </main>
 
-    <!-- Модалка -->
     <div class="modal-wrapper" id="specsModal">
         <div class="modal-backdrop" id="modalBackdrop"></div>
         <div class="modal-content glass-panel">
@@ -629,17 +695,20 @@
             const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
             let targetDeviceText = "на ваше устройство";
 
-            // --- 1. ОПРЕДЕЛЕНИЕ УСТРОЙСТВА ---
+            // --- 1. ОПРЕДЕЛЕНИЕ УСТРОЙСТВА И ОПТИМИЗАЦИЯ ДЛЯ ANDROID ---
             async function detectDevice() {
                 const ua = navigator.userAgent;
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
 
                 if (isMobile) {
-                    if (/iPhone/i.test(ua)) {
+                    if (/Android/i.test(ua)) {
+                        targetDeviceText = "на ваш телефон";
+                        // Если это Android — активируем облегченный CSS режим без жидкого стекла и анимаций
+                        document.body.classList.add('is-android');
+                    } else if (/iPhone/i.test(ua)) {
                         const width = window.screen.width;
                         const height = window.screen.height;
                         const dpr = window.devicePixelRatio;
-                        // Размеры экрана iPhone 11 в поинтах
                         const isIphone11Size = (width === 414 && height === 896) || (width === 896 && height === 414);
                         
                         if (isIphone11Size && dpr === 2) {
@@ -647,8 +716,6 @@
                         } else {
                             targetDeviceText = "на ваш iPhone";
                         }
-                    } else if (/Android/i.test(ua)) {
-                        targetDeviceText = "на ваш телефон";
                     } else {
                         targetDeviceText = "на ваше устройство";
                     }
@@ -710,10 +777,8 @@
                 }, 50);
             }
 
-            // --- 4. НАЖАТИЕ НА ГЛАВНУЮ КНОПКУ (ИСПРАВЛЕНО) ---
+            // --- 4. НАЖАТИЕ НА КНОПКУ СКАЧИВАНИЯ ---
             const mainDownloadBtn = document.getElementById('btnDownloadMain');
-
-            // Теперь это обычный универсальный клик, который без проблем работает на iOS
             mainDownloadBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 triggerDownloadNotification();
