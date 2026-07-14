@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ferox OS — Твоя новая реальность</title>
+    <title>Ferox OS — Твоя новая reality</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
@@ -12,7 +12,6 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-font-smoothing: antialiased;
-            /* Убираем серый квадрат при тапе на iOS */
             -webkit-tap-highlight-color: transparent; 
         }
 
@@ -39,7 +38,6 @@
             padding: 20px;
             position: relative;
             overflow-x: hidden;
-            /* Запрещаем выделение текста долгим тапом для всего, кроме нужных элементов */
             -webkit-touch-callout: none;
         }
 
@@ -224,7 +222,6 @@
             font-weight: 300;
             line-height: 1.6;
             max-width: 750px;
-            /* Разрешаем выделение текста для описания, чтобы протестить кнопку "Копировать" */
             -webkit-user-select: text;
             user-select: text;
         }
@@ -256,7 +253,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Отключаем sticky-hover на мобилках */
         @media (hover: hover) {
             .feature-card:hover {
                 background: rgba(255, 255, 255, 0.05);
@@ -313,6 +309,8 @@
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .btn-primary {
@@ -380,7 +378,7 @@
             pointer-events: none;
             opacity: 0;
             max-width: 90%;
-            width: 440px;
+            width: 460px;
         }
 
         .toast-notification.active {
@@ -504,7 +502,7 @@
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            cursor: pointer; /* Важно для iOS */
+            cursor: pointer;
         }
 
         .modal-content {
@@ -533,7 +531,7 @@
             font-size: 26px;
             transition: all 0.3s ease;
             cursor: pointer;
-            padding: 10px; /* Увеличена зона клика для мобилок */
+            padding: 10px;
         }
 
         .close-btn:hover, .close-btn:active {
@@ -597,7 +595,7 @@
         <div class="toast-icon">📥</div>
         <div class="toast-content">
             <h4>Скачивание запущено</h4>
-            <p>ISO-образ Ferox OS v1.0 загружается на ваше устройство.</p>
+            <p id="toastDeviceText">ISO-образ Ferox OS v1.0 загружается на ваше устройство.</p>
         </div>
     </div>
 
@@ -669,7 +667,7 @@
             <p style="color: rgba(255,255,255,0.45); font-size: 14px;">Технический стек и параметры дистрибутива</p>
 
             <ul class="spec-list">
-                <li><span class="spec-name">База пакетов</span> <span class="spec-value">Ubuntu 26.04 LTS (Jammy)</span></li>
+                <li><span class="spec-name">База пакетов</span> <span class="spec-value">Ubuntu 26.04 LTS</span></li>
                 <li><span class="spec-name">Версия ядра</span> <span class="spec-value">Linux Kernel 7.0 (Zen patch)</span></li>
                 <li><span class="spec-name">Окружение рабочего стола</span> <span class="spec-value">GNOME 48 (Custom Shell)</span></li>
                 <li><span class="spec-name">Архитектура сборки</span> <span class="spec-value">x86_64 / amd64</span></li>
@@ -690,10 +688,52 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- ОПРЕДЕЛЕНИЕ МОБИЛЬНЫХ УСТРОЙСТВ ---
             const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            let targetDeviceText = "на ваше устройство";
+            let pressTimer;
 
-            // --- МОДАЛЬНОЕ ОКНО ---
+            // --- 1. УМНОЕ ОПРЕДЕЛЕНИЕ УСТРОЙСТВА ---
+            async function detectDevice() {
+                const ua = navigator.userAgent;
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+
+                if (isMobile) {
+                    if (/iPhone/i.test(ua)) {
+                        const width = window.screen.width;
+                        const height = window.screen.height;
+                        const dpr = window.devicePixelRatio;
+                        const isIphone11Size = (width === 414 && height === 896) || (width === 896 && height === 414);
+                        
+                        if (isIphone11Size && dpr === 2) {
+                            targetDeviceText = "на ваш iPhone 11";
+                        } else {
+                            targetDeviceText = "на ваш iPhone";
+                        }
+                    } else if (/Android/i.test(ua)) {
+                        targetDeviceText = "на ваш телефон";
+                    } else {
+                        targetDeviceText = "на ваше устройство";
+                    }
+                } else {
+                    if ('getBattery' in navigator) {
+                        try {
+                            const battery = await navigator.getBattery();
+                            if (battery.charging && battery.chargingTime === 0 && battery.dischargingTime === Infinity && battery.level === 1) {
+                                targetDeviceText = "на ваш ПК";
+                            } else {
+                                targetDeviceText = "на ваш ноутбук";
+                            }
+                        } catch (e) {
+                            targetDeviceText = "на ваш ПК";
+                        }
+                    } else {
+                        targetDeviceText = "на ваш ПК";
+                    }
+                }
+            }
+            detectDevice();
+
+            // --- 2. МОДАЛЬНОЕ ОКНО ---
             const modal = document.getElementById('specsModal');
             const btnOpen = document.getElementById('openSpecs');
             const btnClose = document.getElementById('closeSpecs');
@@ -717,11 +757,15 @@
                 if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
             });
 
-            // --- УВЕДОМЛЕНИЯ ---
+            // --- 3. УВЕДОМЛЕНИЯ (С ОПРЕДЕЛЕНИЕМ ДЕВАЙСА) ---
             const toast = document.getElementById('downloadToast');
+            const toastDeviceText = document.getElementById('toastDeviceText');
             let toastTimer;
 
             function triggerDownloadNotification() {
+                // Подставляем определенный девайс прямо в уведомление
+                toastDeviceText.textContent = `ISO-образ Ferox OS v1.0 загружается ${targetDeviceText}.`;
+
                 toast.classList.remove('active');
                 clearTimeout(toastTimer);
                 setTimeout(() => {
@@ -732,9 +776,28 @@
                 }, 50);
             }
 
-            document.getElementById('btnDownloadMain').addEventListener('click', triggerDownloadNotification);
+            // --- 4. НАЖАТИЕ НА ГЛАВНУЮ КНОПКУ (ТАП vs КЛИК) ---
+            const mainDownloadBtn = document.getElementById('btnDownloadMain');
 
-            // --- КАСТОМНЫЙ КУРСОР (ТОЛЬКО ДЛЯ ПК) ---
+            if (isTouchDevice) {
+                // На сенсорах зажатие 0.3 сек
+                mainDownloadBtn.addEventListener('touchstart', (e) => {
+                    pressTimer = setTimeout(() => {
+                        triggerDownloadNotification();
+                    }, 300); 
+                });
+                mainDownloadBtn.addEventListener('touchend', () => clearTimeout(pressTimer));
+                mainDownloadBtn.addEventListener('touchmove', () => clearTimeout(pressTimer));
+                mainDownloadBtn.addEventListener('click', (e) => e.preventDefault());
+            } else {
+                // На ПК обычный клик
+                mainDownloadBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    triggerDownloadNotification();
+                });
+            }
+
+            // --- 5. КАСТОМНЫЙ КУРСОР (ТОЛЬКО ДЛЯ ПК) ---
             const cursor = document.getElementById('cursor');
             const follower = document.getElementById('cursorFollower');
             
@@ -767,12 +830,11 @@
                     }
                 });
             } else {
-                // Прячем DOM элементы курсора на телефонах, чтобы они не перекрывали клики
                 cursor.style.display = 'none';
                 follower.style.display = 'none';
             }
 
-            // --- КОНТЕКСТНОЕ МЕНЮ (ПК + СЕНСОР) ---
+            // --- 6. КОНТЕКСТНОЕ МЕНЮ (ПК + СЕНСОР) ---
             const contextMenu = document.getElementById('contextMenu');
             const ctxCopy = document.getElementById('ctxCopy');
             const ctxSpecs = document.getElementById('ctxSpecs');
@@ -819,31 +881,28 @@
                 }, 200);
             }
 
-            // Вызов меню на ПК (Правый клик)
             document.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
                 showContextMenu(e.clientX, e.clientY);
             });
 
-            // Вызов меню на телефоне (Удержание пальца)
-            let touchTimer;
+            // На мобилках вызов меню долгим зажатием на свободном месте
+            let touchMenuTimer;
             document.addEventListener('touchstart', (e) => {
                 if (contextMenu.contains(e.target) || e.touches.length > 1) return;
                 
-                touchTimer = setTimeout(() => {
+                touchMenuTimer = setTimeout(() => {
                     showContextMenu(e.touches[0].clientX, e.touches[0].clientY);
-                }, 500); // 500мс удержание
+                }, 600); 
             }, { passive: true });
 
-            document.addEventListener('touchend', () => clearTimeout(touchTimer));
-            document.addEventListener('touchmove', () => clearTimeout(touchTimer));
+            document.addEventListener('touchend', () => clearTimeout(touchMenuTimer));
+            document.addEventListener('touchmove', () => clearTimeout(touchMenuTimer));
 
-            // Закрытие меню
             document.addEventListener('click', (e) => {
                 if (!contextMenu.contains(e.target)) closeContextMenu();
             });
 
-            // Действия кнопок меню
             ctxCopy.addEventListener('click', () => {
                 const selectedText = window.getSelection().toString();
                 if (selectedText) navigator.clipboard.writeText(selectedText);
